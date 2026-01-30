@@ -1,6 +1,7 @@
 "use server";
 
 import mealsServices, { IParamsTypes } from "@/services/meals.services";
+import { OrderPayload } from "@/types";
 
 export async function getAllMeals(params?: IParamsTypes) {
   return await mealsServices.getAllMeals(params);

@@ -14,3 +14,12 @@ export interface Route {
   url: string;
   icon?: Icon;
 }
+
+export interface OrderPayload {
+  customerName: string;
+  customerPhone: string;
+  deliveryAddress: string;
+  mealsId: string; // single meal id (cart[0].id)
+  providerProfileId: string; // provider id (cart[0].providerId)
+  totalAmount: number;
+}

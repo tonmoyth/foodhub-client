@@ -22,9 +22,7 @@ export function MealCard({ meal }: any) {
         </p>
 
         <div className="flex justify-between items-center">
-          <p className="font-bold text-primary">
-            ৳{meal.discount_price || meal.price}
-          </p>
+          <p className="font-bold text-primary">৳{meal.price}</p>
 
           {meal.discount_price && (
             <p className="text-sm line-through text-muted-foreground">

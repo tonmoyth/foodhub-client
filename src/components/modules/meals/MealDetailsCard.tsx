@@ -49,14 +49,14 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
           {/* Price */}
           <div className="flex items-end gap-3">
             <span className="text-3xl font-extrabold text-primary">
-              ৳{meal.discount_price || meal.price}
+              ৳{meal.price}
             </span>
 
-            {meal.discount_price && (
+            {/* {meal.discount_price && (
               <span className="text-muted-foreground line-through text-lg">
                 ৳{meal.price}
               </span>
-            )}
+            )} */}
           </div>
 
           {/* Meta */}
@@ -69,13 +69,16 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <Button
               onClick={() => {
-                addToCart({
+                const res = addToCart({
                   id: meal.id,
                   title: meal.title,
-                  price: meal.discount_price || meal.price,
+                  price: meal.price,
                   image: meal.image,
-                  providerId: meal.providerId,
+                  providerProfileId: meal.providerProfileId,
                 });
+                if (res?.success === false) {
+                  return toast.error(res?.message);
+                }
 
                 toast.success("Added to cart 🛒");
                 router.push("/dashboard/cart");
