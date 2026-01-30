@@ -82,7 +82,6 @@ export default function CheckoutPage() {
         toast.success("Order placed successfully!", { id: taosId });
         localStorage.clear();
       } catch (error: any) {
-        console.log(error);
         toast.error(error.message || "Something went wrong", { id: taosId });
       }
     },

@@ -35,24 +35,6 @@ const mealsServices = {
       return { data: null, message: error?.message };
     }
   },
-
-  // orderMeal: async (orderData: OrderPayload) => {
-  //   try {
-  //     const cookiesStore = await cookies();
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         cookie: cookiesStore.toString(),
-  //       },
-  //       body: JSON.stringify(orderData),
-  //     });
-  //     const data = await res.json();
-  //     return data;
-  //   } catch (error: any) {
-  //     return { data: null, message: error?.message };
-  //   }
-  // },
 };
 
 export default mealsServices;

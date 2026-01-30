@@ -79,7 +79,6 @@ export function SignupForm({
         toast.error(`${value.role} Creation field, Please try again`, {
           id: toastId,
         });
-        console.log(error);
       }
     },
   });
