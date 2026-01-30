@@ -1,0 +1,121 @@
+"use client";
+
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { ShoppingCart, Flame } from "lucide-react";
+import { addToCart } from "@/utils/addToCard";
+import { toast } from "sonner";
+
+export default function MealDetailsPage({ meal }: { meal: any }) {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid lg:grid-cols-2 gap-8">
+        {/* IMAGE SECTION */}
+        <div className="relative w-full h-[260px] sm:h-[360px] lg:h-[480px] rounded-xl overflow-hidden">
+          <Image
+            src={meal.image}
+            alt={meal.title}
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+
+        {/* DETAILS SECTION */}
+        <div className="flex flex-col gap-6">
+          {/* Title */}
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="text-2xl sm:text-3xl font-bold leading-tight">
+              {meal.title}
+            </h1>
+
+            <Badge
+              className="h-fit"
+              variant={meal.is_available ? "default" : "destructive"}
+            >
+              {meal.is_available ? "Available" : "Unavailable"}
+            </Badge>
+          </div>
+
+          {/* Description */}
+          <p className="text-muted-foreground leading-relaxed">
+            {meal.description}
+          </p>
+
+          {/* Price */}
+          <div className="flex items-end gap-3">
+            <span className="text-3xl font-extrabold text-primary">
+              ৳{meal.discount_price || meal.price}
+            </span>
+
+            {meal.discount_price && (
+              <span className="text-muted-foreground line-through text-lg">
+                ৳{meal.price}
+              </span>
+            )}
+          </div>
+
+          {/* Meta */}
+          <div className="flex gap-6 text-sm text-muted-foreground">
+            <span>⏱ Prep: {meal.prep_time_minute} min</span>
+            <span>🔥 Freshly made</span>
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <Button
+              onClick={() => {
+                addToCart({
+                  id: meal.id,
+                  title: meal.title,
+                  price: meal.discount_price || meal.price,
+                  image: meal.image,
+                  providerId: meal.providerId,
+                });
+
+                toast.success("Added to cart 🛒");
+              }}
+              variant="outline"
+              size="lg"
+              className="gap-2"
+              disabled={!meal.is_available}
+            >
+              <ShoppingCart size={18} />
+              Add to Cart
+            </Button>
+
+            <Button size="lg" className="gap-2" disabled={!meal.is_available}>
+              <Flame size={18} />
+              Order Now
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* PROVIDER SECTION */}
+      <Card className="mt-10 p-6 flex items-center gap-4">
+        <Image
+          src={meal.providerProfile.logo_image}
+          alt={meal.providerProfile.res_name}
+          width={64}
+          height={64}
+          className="rounded-full border"
+        />
+
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg">
+            {meal.providerProfile.res_name}
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            📍 {meal.providerProfile.address}, {meal.providerProfile.city}
+          </p>
+          <p className="text-sm">📞 {meal.providerProfile.phone}</p>
+        </div>
+
+        <Button variant="ghost">View Restaurant</Button>
+      </Card>
+    </div>
+  );
+}
