@@ -72,8 +72,8 @@ const Navbar1 = ({
       url: "/meals",
     },
     {
-      title: "Resources",
-      url: "#",
+      title: "dashbaord",
+      url: "/dashboard",
     },
   ],
   auth = {

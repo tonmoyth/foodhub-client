@@ -7,8 +7,10 @@ import { Card } from "@/components/ui/card";
 import { ShoppingCart, Flame } from "lucide-react";
 import { addToCart } from "@/utils/addToCard";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function MealDetailsPage({ meal }: { meal: any }) {
+  const router = useRouter();
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid lg:grid-cols-2 gap-8">
@@ -76,6 +78,7 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
                 });
 
                 toast.success("Added to cart 🛒");
+                router.push("/dashboard/cart");
               }}
               variant="outline"
               size="lg"
