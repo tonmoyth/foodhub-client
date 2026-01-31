@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 const ordersServices = {
   getUserOrders: async () => {
     const cookieStore = await cookies();
+
     try {
       const res = await fetch(`${env.API_URL}/api/orders`, {
         headers: {

@@ -37,6 +37,7 @@ import { ROLE } from "@/constent/role";
 import { customerRoutes } from "@/routes/customer.routes";
 import { Route } from "@/types";
 import Link from "next/link";
+import { providerRoutes } from "@/routes/provider.routes";
 
 const data = {
   user: {
@@ -165,6 +166,8 @@ export function AppSidebar({
 
   if (user.role === ROLE.customer) {
     route = customerRoutes;
+  } else if (user.role === ROLE.provider) {
+    route = providerRoutes;
   }
 
   return (
