@@ -22,6 +22,29 @@ const userService = {
       return { seesion: null, message: error.message };
     }
   },
+  getCurrentUser: async () => {
+    const cookieStore = await cookies();
+
+    try {
+      const res = await fetch(`${env.AUTH_API}/auth/me`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      const user = await res.json();
+      console.log(user);
+
+      // if (session === null) {
+      //   return { session: null, message: "session not found" };
+      // }
+      return user;
+    } catch (error: any) {
+      console.log(error);
+      return { seesion: null, message: error.message };
+    }
+  },
 };
 
 export default userService;
