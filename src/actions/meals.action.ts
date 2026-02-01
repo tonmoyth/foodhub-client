@@ -46,3 +46,7 @@ export async function getOrdersForProvider(id: string) {
 export async function getAllUsers() {
   return await userService.getAllUsers();
 }
+
+export async function getAllOrdersForAdmin() {
+  return await ordersServices.getAllOrdersForAdmin();
+}
