@@ -34,6 +34,22 @@ const ordersServices = {
       return { data: null, message: error?.message };
     }
   },
+
+  getOrdersForProvider: async (id: string) => {
+    const cookieStore = await cookies();
+    try {
+      const res = await fetch(`${env.API_URL}/api/orders/provider/${id}`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+      const data = await res.json();
+      return data;
+    } catch (error: any) {
+      return { data: null, message: error?.message };
+    }
+  },
 };
 
 export default ordersServices;
