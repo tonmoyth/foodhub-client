@@ -1,6 +1,16 @@
-import { IconInbox, IconMenu, IconPlus } from "@tabler/icons-react";
+import {
+  IconInbox,
+  IconMenu,
+  IconPlus,
+  IconLayoutDashboard,
+} from "@tabler/icons-react";
 
 export const providerRoutes = [
+  {
+    title: "dashboard",
+    url: "/dashboard",
+    icon: IconLayoutDashboard,
+  },
   {
     title: "Add Menu",
     url: "/dashboard/addmenu",

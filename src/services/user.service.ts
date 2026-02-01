@@ -45,6 +45,25 @@ const userService = {
       return { seesion: null, message: error.message };
     }
   },
+
+  getAllUsers: async () => {
+    const cookieStore = await cookies();
+
+    try {
+      const res = await fetch(`${env.API_URL}/api/admin/users`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      const users = await res.json();
+
+      return users;
+    } catch (error: any) {
+      return { users: null, message: error.message };
+    }
+  },
 };
 
 export default userService;

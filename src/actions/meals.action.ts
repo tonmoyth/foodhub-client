@@ -42,3 +42,7 @@ export async function getMealsByProvider() {
 export async function getOrdersForProvider(id: string) {
   return await ordersServices.getOrdersForProvider(id);
 }
+
+export async function getAllUsers() {
+  return await userService.getAllUsers();
+}
