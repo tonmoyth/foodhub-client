@@ -35,6 +35,29 @@ const mealsServices = {
       return { data: null, message: error?.message };
     }
   },
+
+  getMealsByProvider: async () => {
+    const cookieStore = await cookies();
+
+    try {
+      const res = await fetch(`${env.API_URL}/api/provider/meals/speciphic`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+        next: {
+          tags: ["provider-meals"],
+        },
+      });
+
+      const meals = await res.json();
+
+      return meals;
+    } catch (error: any) {
+      console.log(error);
+      return { data: null, message: error.message };
+    }
+  },
 };
 
 export default mealsServices;

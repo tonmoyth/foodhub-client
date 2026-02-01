@@ -34,3 +34,7 @@ export async function getAllCategories() {
 export async function getSignleProvider() {
   return await providerService.getSignleProvider();
 }
+
+export async function getMealsByProvider() {
+  return await mealsServices.getMealsByProvider();
+}
