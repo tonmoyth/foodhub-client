@@ -1,23 +1,24 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import userService from "./services/user.service";
-import { ROLE } from "./constent/role";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  let isAuthentication = false;
-  let isAdmin = false;
+  const pathname = request.nextUrl.pathname;
 
-  const session = await userService.getSession();
+  // Skip middleware for verify-email route
+  // if (pathname.startsWith("/verify-email")) {
+  //   return NextResponse.next();
+  // }
 
-  if (session?.session) {
-    isAuthentication = true;
-    isAdmin = session?.user?.role === ROLE.admin;
-  }
+  // Check for session token in cookies
+  const sessionToken = request.cookies.get(
+    "__Secure-better-auth.session_token",
+  );
 
-  if (!isAuthentication) {
+  //* User is not authenticated at all
+  if (!sessionToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  // Allow access if session exists
   return NextResponse.next();
 }
 

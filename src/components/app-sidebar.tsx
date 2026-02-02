@@ -33,12 +33,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { ROLE } from "@/constent/role";
 import { customerRoutes } from "@/routes/customer.routes";
 import { Route } from "@/types";
 import Link from "next/link";
 import { providerRoutes } from "@/routes/provider.routes";
 import { adminRoutes } from "@/routes/admin.routes";
+import { ROLE } from "@/constent/role";
 
 interface userProfile {
   name: string;
@@ -53,11 +53,11 @@ export function AppSidebar({
 }) {
   let route: Route[] = [];
 
-  if (user.role === ROLE.customer) {
+  if (user?.role === ROLE.customer) {
     route = customerRoutes;
-  } else if (user.role === ROLE.provider) {
+  } else if (user?.role === ROLE.provider) {
     route = providerRoutes;
-  } else if (user.role === ROLE.admin) {
+  } else if (user?.role === ROLE.admin) {
     route = adminRoutes;
   }
 

@@ -27,7 +27,7 @@ export default async function Page({
         } as React.CSSProperties
       }
     >
-      <AppSidebar user={session.user} />
+      <AppSidebar user={session?.user} />
       <SidebarInset>
         <SiteHeader />
         {/* <div className="flex flex-1 flex-col">
@@ -41,9 +41,9 @@ export default async function Page({
           </div>
         </div> */}
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          {session.user.role === ROLE.admin
+          {session?.user?.role === ROLE.admin
             ? admin
-            : session.user.role === ROLE.customer
+            : session?.user?.role === ROLE.customer
               ? customer
               : provider}
         </div>
