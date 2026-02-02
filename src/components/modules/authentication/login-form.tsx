@@ -42,6 +42,7 @@ export function LoginForm({
         if (data !== null) {
           toast.success(`Login successfully`, { id: toastId });
           router.push("/");
+          router.refresh();
         }
       } catch (error) {
         toast.error(`Login field, Please try again`, {

@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import HeroBgImage from "../../../../public/foodhub-hero-image.jpg";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Hero7Props {
   heading?: string;
@@ -58,9 +59,7 @@ const Hero7 = ({
   className,
 }: Hero7Props) => {
   return (
-    <section
-      className={cn("relative py-32 min-h-[calc(90vh-65px)]", className)}
-    >
+    <section className={cn("relative py-32 min-h-[100vh]", className)}>
       {/* Background Image */}
       <Image
         src={HeroBgImage} // public/hero-bg.jpg
@@ -74,17 +73,21 @@ const Hero7 = ({
       <div className="absolute inset-0 bg-black/50 -z-10" />
 
       {/* Content */}
-      <div className="container mx-auto text-center relative">
-        <div className="mx-auto flex items-center justify-center max-w-5xl flex-col gap-6">
-          <h1 className="text-3xl font-semibold lg:text-6xl text-white">
+      <div className="container mx-auto p-5 flex items-center justify-center min-h-[70vh] relative text-center">
+        <div className="flex flex-col items-center justify-center gap-6 max-w-5xl">
+          <h1 className="text-3xl lg:text-6xl font-semibold text-white">
             {heading}
           </h1>
-          <p className="text-balance text-gray-200 lg:text-lg">{description}</p>
-        </div>
+          <p className="text-gray-200 lg:text-lg">{description}</p>
 
-        <Button asChild size="lg" className="mt-10">
-          <a href={button.url}>{button.text}</a>
-        </Button>
+          <Button
+            asChild
+            size="lg"
+            className="mt-6 bg-yellow-300 text-black hover:bg-yellow-200"
+          >
+            <Link href={button.url}>{button.text}</Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

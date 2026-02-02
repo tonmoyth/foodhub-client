@@ -26,7 +26,7 @@ const userService = {
     const cookieStore = await cookies();
 
     try {
-      const res = await fetch(`${env.AUTH_API}/auth/me`, {
+      const res = await fetch(`${env.API_URL}/auth/me`, {
         headers: {
           cookie: cookieStore.toString(),
         },

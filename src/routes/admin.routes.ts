@@ -8,7 +8,7 @@ import {
 export const adminRoutes = [
   {
     title: "Dashboard",
-    url: "/admin/dashboard",
+    url: "/dashboard",
     icon: IconLayoutDashboard,
   },
   {

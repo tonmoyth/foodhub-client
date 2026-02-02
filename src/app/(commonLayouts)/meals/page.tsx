@@ -37,9 +37,9 @@ export default async function Page({
   );
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 p-5 pt-20">
       {/* Filter */}
-      <div className="container mx-auto grid grid-cols-4 gap-6">
+      <div className="container mx-auto grid lg:grid-cols-4 gap-6">
         <MealFilter category={categories.data} />
       </div>
 
