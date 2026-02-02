@@ -44,7 +44,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
           body: JSON.stringify(reviewData),
         },
       );
-      console.log(response);
 
       if (!response.ok) throw new Error("Failed to submit review");
 
@@ -53,7 +52,6 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       setComment("");
       onClose();
     } catch (err) {
-      console.error(err);
       toast.error("Failed to submit review. Try again.");
     }
   };

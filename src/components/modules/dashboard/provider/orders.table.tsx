@@ -63,7 +63,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
       toast.success("Status updated successfully!", { id: taostId });
       router.refresh();
     } catch (error: any) {
-      console.error(error);
       toast.error(error.message || "Failed to update status");
     }
   };

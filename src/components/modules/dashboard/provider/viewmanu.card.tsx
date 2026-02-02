@@ -31,7 +31,6 @@ export default function MenuCard({
   categories: any;
 }) {
   const [open, setOpen] = useState(false);
-  console.log(item);
 
   const hasDiscount = !!item.discount_price;
   const finalPrice = hasDiscount

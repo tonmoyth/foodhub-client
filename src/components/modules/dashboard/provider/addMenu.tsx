@@ -67,7 +67,7 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
       image: "",
       is_available: true,
       prep_time_minute: "20",
-      providerProfileId: providerData.data.id,
+      providerProfileId: providerData?.data?.id,
     },
     validators: {
       onSubmit: mealSchema,
@@ -92,7 +92,6 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
 
         toast.success("Meal creation successfully!");
       } catch (err) {
-        console.error(err);
         toast.error("Failed meal creation. Try again.");
       }
       form.reset();
@@ -112,7 +111,7 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
           id="meal-form"
           onSubmit={(e) => {
             e.preventDefault();
-            form.handleSubmit();
+            form.handleSubmit(e);
           }}
           className="space-y-4"
         >

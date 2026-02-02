@@ -30,12 +30,10 @@ const UpdateCategoriesModal: React.FC<ReviewModalProps> = ({
   cat_id,
   category_code,
 }) => {
-  console.log(category);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const router = useRouter();
-  console.log(category_code);
 
   const UpdateCategories = async () => {
     const toastId = toast.loading("Updating category...");
@@ -77,7 +75,6 @@ const UpdateCategoriesModal: React.FC<ReviewModalProps> = ({
       onClose();
       router.refresh();
     } catch (err) {
-      console.error(err);
       toast.error("Failed to update. Try again.", { id: toastId });
     }
   };

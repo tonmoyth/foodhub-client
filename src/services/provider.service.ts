@@ -17,7 +17,6 @@ const providerService = {
 
       return provider;
     } catch (error: any) {
-      console.log(error);
       return { seesion: null, message: error.message };
     }
   },

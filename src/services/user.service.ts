@@ -34,14 +34,12 @@ const userService = {
       });
 
       const user = await res.json();
-      console.log(user);
 
       // if (session === null) {
       //   return { session: null, message: "session not found" };
       // }
       return user;
     } catch (error: any) {
-      console.log(error);
       return { seesion: null, message: error.message };
     }
   },

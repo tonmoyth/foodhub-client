@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 export interface IParamsTypes {
   search?: string;
   categoriesId?: string;
+  maxPrice?: Number;
 }
 
 const mealsServices = {
@@ -54,7 +55,6 @@ const mealsServices = {
 
       return meals;
     } catch (error: any) {
-      console.log(error);
       return { data: null, message: error.message };
     }
   },
