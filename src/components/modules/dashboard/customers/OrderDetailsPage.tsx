@@ -46,13 +46,15 @@ const OrderDetailsPage: React.FC<OrderDetailsPageProps> = ({ order }) => {
       {/* Provider Info */}
       <Card className="shadow-sm hover:shadow-md transition">
         <CardHeader className="px-4 pt-4 flex items-center gap-4">
-          <Image
-            src={order?.provider?.logo_image}
-            alt={order.provider.res_name}
-            width={60}
-            height={60}
-            className="rounded-full object-cover"
-          />
+          {order.provider.logo_image && (
+            <Image
+              src={order?.provider?.logo_image}
+              alt={order.provider.res_name}
+              width={60}
+              height={60}
+              className="rounded-full object-cover"
+            />
+          )}
           <CardTitle>{order.provider.res_name}</CardTitle>
         </CardHeader>
         <CardContent className="px-4 pb-4 space-y-2 text-sm text-muted-foreground">
@@ -128,13 +130,11 @@ const OrderDetailsPage: React.FC<OrderDetailsPageProps> = ({ order }) => {
         <Button
           onClick={() => setIsReviewOpen(true)}
           disabled={order.status !== "DELIVERED"}
-          className="w-full sm:w-1/2"
+          className="w-full "
         >
           Review
         </Button>
-        <Button className="w-full sm:w-1/2" variant="outline">
-          Contact Provider
-        </Button>
+
         <ReviewModal
           isOpen={isReviewOpen}
           onClose={() => setIsReviewOpen(false)}

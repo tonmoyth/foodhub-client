@@ -6,11 +6,11 @@ import OrdersTable from "@/components/modules/dashboard/provider/orders.table";
 
 export default async function Page() {
   const { data } = await getSignleProvider();
-  const incommingOrders = await getOrdersForProvider(data.id);
+  const incommingOrders = await getOrdersForProvider(data?.id);
 
   return (
     <div>
-      <OrdersTable orders={incommingOrders.data}></OrdersTable>
+      <OrdersTable orders={incommingOrders?.data}></OrdersTable>
     </div>
   );
 }

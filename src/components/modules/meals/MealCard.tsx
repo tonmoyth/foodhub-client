@@ -18,21 +18,21 @@ export function MealCard({ meal }: any) {
         <h4 className="font-semibold">{meal.title}</h4>
 
         <p className="text-sm text-muted-foreground">
-          {meal.providerProfile.res_name}
+          {meal?.providerProfile?.res_name}
         </p>
 
         <div className="flex justify-between items-center">
           <p className="font-bold text-primary">৳{meal.price}</p>
 
-          {meal.discount_price && (
+          {/* {meal?.discount_price && (
             <p className="text-sm line-through text-muted-foreground">
-              ৳{meal.price}
+              ৳{meal?.price}
             </p>
-          )}
+          )} */}
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Prep: {meal.prep_time_minute} min
+          Prep: {meal?.prep_time_minute} min
         </p>
       </CardContent>
 

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/field";
 
 import { getCart } from "@/utils/addToCard";
+import { useRouter } from "next/navigation";
 
 /* ---------------- ZOD SCHEMA ---------------- */
 const checkoutSchema = z.object({
@@ -34,6 +35,7 @@ const checkoutSchema = z.object({
 
 export default function CheckoutPage() {
   const [cart, setCartState] = useState<any[]>([]);
+  const route = useRouter();
 
   useEffect(() => {
     setCartState(getCart());
@@ -81,6 +83,8 @@ export default function CheckoutPage() {
 
         toast.success("Order placed successfully!", { id: taosId });
         localStorage.clear();
+        route.refresh();
+        form.reset();
       } catch (error: any) {
         toast.error(error.message || "Something went wrong", { id: taosId });
       }

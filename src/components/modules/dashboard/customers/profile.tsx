@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const profileSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -45,6 +46,7 @@ const passwordSchema = z
 /* ---------------- COMPONENT ---------------- */
 
 export default function ManageCustomerProfile({ user }: any) {
+  const router = useRouter();
   const profileForm = useForm({
     defaultValues: {
       name: user.name,
@@ -62,6 +64,7 @@ export default function ManageCustomerProfile({ user }: any) {
 
         if (data?.status) {
           toast.success("Profile updated successfully", { id: toastId });
+          router.refresh();
         }
       } catch (error: any) {
         toast.error(error?.message || "Failed to update profile", {
@@ -148,17 +151,59 @@ export default function ManageCustomerProfile({ user }: any) {
                 children={(field) => {
                   const invalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
+
+                  const handleImageUpload = async (
+                    e: React.ChangeEvent<HTMLInputElement>,
+                  ) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    try {
+                      const res = await fetch(
+                        `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+                        {
+                          method: "POST",
+                          body: formData,
+                        },
+                      );
+
+                      const data = await res.json();
+
+                      if (data.success) {
+                        field.handleChange(data.data.display_url);
+                      }
+                    } catch (error) {
+                      console.error("Image upload failed", error);
+                    }
+                  };
+
                   return (
                     <Field data-invalid={invalid}>
-                      <FieldLabel>Profile Image URL</FieldLabel>
+                      <FieldLabel>Profile Image</FieldLabel>
+
+                      {/* File input */}
                       <Input
-                        value={field?.state?.value || ""}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        onBlur={field.handleBlur}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
                       />
+
+                      {/* Preview */}
+                      {field.state.value && (
+                        <img
+                          src={field.state.value}
+                          alt="Preview"
+                          className="mt-2 h-24 w-24 rounded-full object-cover border"
+                        />
+                      )}
+
                       <FieldDescription>
-                        Paste a public image URL
+                        Upload an image (ImgBB)
                       </FieldDescription>
+
                       {invalid && (
                         <FieldError errors={field.state.meta.errors} />
                       )}

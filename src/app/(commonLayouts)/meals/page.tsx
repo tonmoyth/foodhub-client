@@ -19,6 +19,7 @@ export default async function Page({
   const categoriesId = params.categoriesId;
 
   const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
+
   const [mealsData, categories] = await Promise.all([
     getAllMeals({
       categoriesId,
@@ -27,37 +28,42 @@ export default async function Page({
     getAllCategories(),
   ]);
 
-  const providers = Array.from(
-    new Map(
-      mealsData?.data?.map((m: any) => [
-        m.providerProfile.id,
-        m.providerProfile,
-      ]),
-    ).values(),
-  );
+  const providers = mealsData?.data
+    ? Array.from(
+        new Map(
+          mealsData.data.map((m: any) => [
+            m?.providerProfile?.id,
+            m?.providerProfile,
+          ]),
+        ).values(),
+      )
+    : [];
 
   return (
-    <div className="space-y-10 p-5 pt-20">
-      {/* Filter */}
-      <div className="container mx-auto grid lg:grid-cols-4 gap-6">
-        <MealFilter category={categories.data} />
-      </div>
-
+    <div className="space-y-10 p-5 pt-25">
       {/* Content */}
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
         {/* Providers */}
         <div className="md:col-span-1 space-y-4">
+          {/* Filter */}
+          <div>
+            <MealFilter category={categories?.data} />
+          </div>
           <h3 className="text-lg font-semibold">Providers</h3>
-          {providers.map((p: any) => (
-            <ProviderCard key={p.id} provider={p} />
-          ))}
+          {providers.length > 0 ? (
+            providers?.map((p: any, idx) => (
+              <ProviderCard key={p?.id || idx} provider={p} />
+            ))
+          ) : (
+            <p>No providers found</p>
+          )}
         </div>
 
         {/* Meals */}
         <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {mealsData?.data?.length > 0 ? (
-            mealsData.data.map((meal: any) => (
-              <MealCard key={meal.id} meal={meal} />
+            mealsData?.data.map((meal: any) => (
+              <MealCard key={meal?.id} meal={meal} />
             ))
           ) : (
             <p className="col-span-full text-center text-muted-foreground">

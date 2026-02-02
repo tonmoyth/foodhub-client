@@ -81,38 +81,47 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell>{order.customerName}</TableCell>
-              <TableCell>{order.customerPhone}</TableCell>
-              <TableCell>{order.deliveryAddress}</TableCell>
-              <TableCell>${order.totalAmount}</TableCell>
-
-              <TableCell>
-                {new Date(order.created_at).toLocaleString()}
-              </TableCell>
-              <TableCell>
-                <Select
-                  value={order.status}
-                  onValueChange={(value) =>
-                    handleStatusChange(order.id, value as Order["status"])
-                  }
-                  //   disabled={updatingId === order.id}
-                >
-                  <SelectTrigger className="w-[150px]">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="PENDING">PENDING</SelectItem>
-                    <SelectItem value="PREPARING">PREPARING</SelectItem>
-                    <SelectItem value="READY">READY</SelectItem>
-                    <SelectItem value="DELIVERED">DELIVERED</SelectItem>
-                    <SelectItem value="CANCELLED">CANCELLED</SelectItem>
-                  </SelectContent>
-                </Select>
+          {orders.length === 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan={6}
+                className="text-center py-10 text-muted-foreground"
+              >
+                No orders found
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            orders.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell>{order.customerName}</TableCell>
+                <TableCell>{order.customerPhone}</TableCell>
+                <TableCell>{order.deliveryAddress}</TableCell>
+                <TableCell>৳{order.totalAmount}</TableCell>
+                <TableCell>
+                  {new Date(order.created_at).toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  <Select
+                    value={order.status}
+                    onValueChange={(value) =>
+                      handleStatusChange(order.id, value as Order["status"])
+                    }
+                  >
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="PENDING">PENDING</SelectItem>
+                      <SelectItem value="PREPARING">PREPARING</SelectItem>
+                      <SelectItem value="READY">READY</SelectItem>
+                      <SelectItem value="DELIVERED">DELIVERED</SelectItem>
+                      <SelectItem value="CANCELLED">CANCELLED</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

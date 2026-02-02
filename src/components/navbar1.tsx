@@ -169,7 +169,7 @@ const Navbar1 = ({
                 <Button variant="ghost" className="rounded-full w-10 h-10 p-0">
                   <img
                     src={
-                      user.avatar || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
+                      user.image || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
                     }
                     alt={user.name}
                     className="rounded-full w-10 h-10 object-cover"
@@ -185,7 +185,7 @@ const Navbar1 = ({
                 <div className="bg-muted p-4 text-center">
                   <img
                     src={
-                      user.avatar || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
+                      user.image || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
                     }
                     alt={user.name}
                     className="mx-auto w-12 h-12 rounded-full object-cover mb-2"

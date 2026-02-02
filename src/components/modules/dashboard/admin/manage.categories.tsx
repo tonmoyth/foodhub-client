@@ -14,6 +14,7 @@ import CreateCategories from "./create.categories.modal";
 import { env } from "@/env";
 import { useRouter } from "next/navigation";
 import UpdateCategoriesModal from "./update.categories.modal";
+import Swal from "sweetalert2";
 
 export interface Category {
   id: string;
@@ -31,9 +32,19 @@ const ManageCategories = (items: any) => {
   const [code, setCode] = useState("");
   const router = useRouter();
 
-  // Delete category
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this category?")) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This category will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const res = await fetch(
@@ -43,11 +54,24 @@ const ManageCategories = (items: any) => {
           credentials: "include",
         },
       );
+
       if (!res.ok) throw new Error("Delete failed");
-      toast.success("Category deleted successfully");
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Category has been deleted successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
       router.refresh();
-    } catch (err) {
-      toast.error("Failed to delete category");
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Failed to delete category. Please try again.",
+      });
     }
   };
 

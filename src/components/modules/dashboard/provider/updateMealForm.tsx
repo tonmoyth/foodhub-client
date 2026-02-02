@@ -71,6 +71,7 @@ const UpdateMealModal: React.FC<UpdateMealModalProps> = ({
   onUpdated,
   categories,
 }) => {
+  console.log(meal);
   const router = useRouter();
   const form = useForm({
     defaultValues: {
@@ -204,7 +205,7 @@ const UpdateMealModal: React.FC<UpdateMealModalProps> = ({
                     <FieldLabel>Price</FieldLabel>
                     <Input
                       type="number"
-                      value={field.state.value}
+                      defaultValue={meal.price}
                       onBlur={field.handleBlur}
                       onChange={(e) =>
                         field.handleChange(Number(e.target.value))
@@ -226,7 +227,7 @@ const UpdateMealModal: React.FC<UpdateMealModalProps> = ({
                     <FieldLabel>Discount Price</FieldLabel>
                     <Input
                       type="number"
-                      value={field.state.value}
+                      defaultValue={meal.discount_price}
                       onBlur={field.handleBlur}
                       onChange={(e) =>
                         field.handleChange(Number(e.target.value))

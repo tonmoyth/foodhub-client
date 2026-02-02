@@ -11,11 +11,11 @@ export const providerRoutes = [
     url: "/dashboard",
     icon: IconLayoutDashboard,
   },
-  {
-    title: "Make Provider Profile",
-    url: "/dashboard/makeProvider",
-    icon: IconLayoutDashboard,
-  },
+  // {
+  //   title: "Make Provider Profile",
+  //   url: "/dashboard/makeProvider",
+  //   icon: IconLayoutDashboard,
+  // },
   {
     title: "Add Menu",
     url: "/dashboard/addmenu",

@@ -63,6 +63,7 @@ export function UpdateProviderForm() {
         if (!response.ok) throw new Error("Failed to update provider");
 
         toast.success("Provider updated successfully!", { id: toastId });
+        router.push("/dashboard/addmenu");
         router.refresh();
       } catch (err) {
         console.error(err);

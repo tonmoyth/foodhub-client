@@ -12,17 +12,19 @@ import { useRouter } from "next/navigation";
 export default function MealDetailsPage({ meal }: { meal: any }) {
   const router = useRouter();
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 pt-25">
       <div className="grid lg:grid-cols-2 gap-8">
         {/* IMAGE SECTION */}
         <div className="relative w-full h-[260px] sm:h-[360px] lg:h-[480px] rounded-xl overflow-hidden">
-          <Image
-            src={meal.image}
-            alt={meal.title}
-            fill
-            priority
-            className="object-cover"
-          />
+          {meal && (
+            <Image
+              src={meal.image}
+              alt={meal.title || "Meal image"}
+              fill
+              priority
+              className="object-cover"
+            />
+          )}
         </div>
 
         {/* DETAILS SECTION */}
@@ -66,7 +68,7 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
           </div>
 
           {/* ACTION BUTTONS */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 gap-4 mt-4">
             <Button
               onClick={() => {
                 const res = addToCart({
@@ -92,25 +94,20 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
               Add to Cart
             </Button>
 
-            <Button size="lg" className="gap-2" disabled={!meal.is_available}>
+            {/* <Button size="lg" className="gap-2" disabled={!meal.is_available}>
               <Flame size={18} />
               Order Now
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
 
-      {/* PROVIDER SECTION */}
-      <Card className="mt-10 p-6 flex items-center gap-4">
-        <Image
-          src={meal.providerProfile.logo_image}
-          alt={meal.providerProfile.res_name}
-          width={64}
-          height={64}
-          className="rounded-full border"
-        />
-
-        <div className="flex-1">
+      <Card className="mt-10 shadow-none border-none  p-6 flex items-center justify-center gap-4">
+        <div className="w-1/3 border p-5 shadow-md rounded-md space-y-2">
+          <h1 className="font-semibold text-lg text-center mb-2">
+            {" "}
+            Resturent Name
+          </h1>
           <h3 className="font-semibold text-lg">
             {meal.providerProfile.res_name}
           </h3>
@@ -120,7 +117,7 @@ export default function MealDetailsPage({ meal }: { meal: any }) {
           <p className="text-sm">📞 {meal.providerProfile.phone}</p>
         </div>
 
-        <Button variant="ghost">View Restaurant</Button>
+        {/* <Button variant="ghost">View Restaurant</Button> */}
       </Card>
     </div>
   );

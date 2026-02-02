@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UpdateMealModal from "./updateMealForm";
+import Swal from "sweetalert2";
 
 interface MenuItem {
   id: string;
@@ -40,6 +41,19 @@ export default function MenuCard({
   const router = useRouter();
 
   const handleDelete = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This menu item will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     const toastId = toast.loading("Deleting menu item...");
 
     try {
@@ -63,6 +77,7 @@ export default function MenuCard({
       toast.success("Menu item deleted successfully", {
         id: toastId,
       });
+
       router.refresh();
     } catch (error: any) {
       toast.error(error.message || "Something went wrong", {
@@ -72,80 +87,81 @@ export default function MenuCard({
   };
 
   return (
-    <Card className="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
-      {/* Image */}
-      <div className="relative h-44 w-full">
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          className="object-cover"
-        />
+    <div>
+      <Card className="rounded-3xl flex flex-col overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+        {/* Image */}
+        <div className="relative h-48 w-full">
+          <Image
+            src={item.image}
+            alt={item.title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+          />
 
-        {/* Availability */}
-        <Badge
-          className={`absolute top-3 left-3 text-xs ${
-            item.is_available ? "bg-green-600" : "bg-red-500"
-          }`}
-        >
-          {item.is_available ? "Available" : "Unavailable"}
-        </Badge>
-      </div>
-
-      {/* Content */}
-      <CardContent className="p-4 space-y-3">
-        {/* Title */}
-        <div>
-          <h3 className="text-base font-semibold line-clamp-1">{item.title}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {item.description}
-          </p>
+          {/* Availability Badge */}
+          <Badge
+            className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${
+              item.is_available
+                ? "bg-green-800 text-white"
+                : "bg-red-500 text-white"
+            }`}
+          >
+            {item.is_available ? "Available" : "Unavailable"}
+          </Badge>
         </div>
 
-        {/* Price + Time */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold">৳{finalPrice}</span>
-            {hasDiscount && (
-              <span className="text-sm line-through text-muted-foreground">
-                ৳{item.price}
-              </span>
-            )}
+        {/* Content */}
+        <CardContent className="p-5 space-y-4 bg-gradient-to-b from-white to-gray-50">
+          {/* Title + Description */}
+          <div>
+            <h3 className="text-lg font-bold line-clamp-1 text-gray-900">
+              {item.title}
+            </h3>
+            <p className="text-sm text-gray-500 line-clamp-2 mt-1">
+              {item.description}
+            </p>
           </div>
 
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Clock className="h-4 w-4" />
-            {item.prep_time_minute} min
+          {/* Price + Time */}
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-extrabold text-green-800">
+              ৳{finalPrice}
+            </span>
+            <div className="flex items-center gap-1 text-xs text-gray-400">
+              <Clock className="h-4 w-4" />
+              {item.prep_time_minute} min
+            </div>
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="flex flex-col gap-2 pt-2">
-          <Button
-            onClick={() => setOpen(true)}
-            size="sm"
-            variant="outline"
-            className="w-full"
-          >
-            <Pencil className="h-4 w-4 mr-1" /> Edit
-          </Button>
-          <Button
-            onClick={() => handleDelete(item.id)}
-            size="sm"
-            variant="destructive"
-            className="w-full"
-          >
-            <Trash2 className="h-4 w-4 mr-1" /> Delete
-          </Button>
-        </div>
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-3">
+            <Button
+              onClick={() => setOpen(true)}
+              size="sm"
+              variant="outline"
+              className="flex-1 bg-white hover:bg-indigo-50 border-green-800 text-green-800 font-medium shadow-sm hover:shadow-md transition"
+            >
+              <Pencil className="h-4 w-4 mr-1" /> Edit
+            </Button>
 
-        <UpdateMealModal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          meal={item}
-          categories={categories}
-        />
-      </CardContent>
-    </Card>
+            <Button
+              onClick={() => handleDelete(item.id)}
+              size="sm"
+              variant="destructive"
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white shadow-sm hover:shadow-md transition"
+            >
+              <Trash2 className="h-4 w-4 mr-1" /> Delete
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+      {/* Update Modal */}
+      <UpdateMealModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        meal={item}
+        categories={categories}
+      />
+    </div>
   );
 }

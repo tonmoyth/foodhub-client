@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
+import { env } from "@/env";
 
 /* ---------------- Zod Schema ---------------- */
 const mealSchema = z.object({
@@ -57,6 +58,8 @@ const mealSchema = z.object({
 /* ---------------- Component ---------------- */
 export function CreateMealForm({ categoriesData, providerData }: any) {
   const router = useRouter();
+  const [uploading, setUploading] = React.useState(false);
+
   const form = useForm({
     defaultValues: {
       title: "",
@@ -142,7 +145,6 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
                 );
               }}
             />
-
             {/* Description */}
             <form.Field
               name="description"
@@ -177,7 +179,6 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
                 );
               }}
             />
-
             {/* Price & Discount */}
             <div className="flex gap-4">
               <form.Field
@@ -188,7 +189,6 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
                     <Input
                       type="number"
                       id={field.name}
-                      value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) =>
                         field.handleChange(Number(e.target.value))
@@ -208,7 +208,6 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
                     <Input
                       type="number"
                       id={field.name}
-                      value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) =>
                         field.handleChange(Number(e.target.value))
@@ -250,25 +249,71 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
               )}
             />
 
-            {/* Image URL */}
+            {/* image */}
             <form.Field
               name="image"
-              children={(field) => (
-                <div>
-                  <FieldLabel htmlFor={field.name}>Image URL</FieldLabel>
-                  <Input
-                    id={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  {field.state.meta.errors?.length > 0 && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
-                </div>
-              )}
-            />
+              children={(field) => {
+                const handleImageChange = async (
+                  e: React.ChangeEvent<HTMLInputElement>,
+                ) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
 
+                  setUploading(true);
+
+                  try {
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    const res = await fetch(
+                      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+                      {
+                        method: "POST",
+                        body: formData,
+                      },
+                    );
+
+                    const data = await res.json();
+                    if (data.success) {
+                      field.handleChange(data.data.url);
+                      toast.success("Image uploaded successfully!");
+                    } else {
+                      toast.error("Image upload failed. Try again.");
+                    }
+                  } catch (err) {
+                    toast.error("Image upload failed. Try again.");
+                  } finally {
+                    setUploading(false);
+                  }
+                };
+
+                return (
+                  <div>
+                    <FieldLabel htmlFor={field.name}>Upload Image</FieldLabel>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                    />
+                    {uploading && (
+                      <p className="text-sm text-muted-foreground">
+                        Uploading...
+                      </p>
+                    )}
+                    {field.state.value && (
+                      <img
+                        src={field.state.value}
+                        alt="Uploaded Preview"
+                        className="mt-2 w-32 h-32 object-cover rounded"
+                      />
+                    )}
+                    {field.state.meta.errors?.length > 0 && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </div>
+                );
+              }}
+            />
             {/* Availability & Prep Time */}
             <div className="flex gap-4 items-center">
               <form.Field
