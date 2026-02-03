@@ -5,12 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Pencil, Trash2 } from "lucide-react";
-import { env } from "@/env";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import UpdateMealModal from "./updateMealForm";
 import Swal from "sweetalert2";
+import { deleteMeal } from "@/actions/meals.action";
 
 interface MenuItem {
   id: string;
@@ -56,31 +56,18 @@ export default function MenuCard({
 
     const toastId = toast.loading("Deleting menu item...");
 
-    try {
-      const res = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/api/provider/meals/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        },
-      );
+    const formData = new FormData();
+    formData.append("mealId", id);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Delete failed");
-      }
-
+    const deleteResult = await deleteMeal(formData);
+    if (deleteResult.success) {
       toast.success("Menu item deleted successfully", {
         id: toastId,
       });
 
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong", {
+    } else {
+      toast.error(deleteResult.message || "Something went wrong", {
         id: toastId,
       });
     }

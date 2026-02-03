@@ -12,8 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { User } from "@/types";
 import { ROLE } from "@/constent/role";
-import { env } from "@/env";
 import { useRouter } from "next/navigation";
+import { toggleUserStatus } from "@/actions/meals.action";
 
 interface UsersTableProps {
   users: User[];
@@ -28,28 +28,20 @@ export default function UsersTable({ users }: UsersTableProps) {
 
     setLoadingId(user.id);
 
-    try {
-      const res = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/api/admin/users/${user.id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ status: newStatus }),
-        },
-      );
+    const formData = new FormData();
+    formData.append("userId", user.id);
+    formData.append("status", newStatus);
 
-      if (!res.ok) throw new Error("Update failed");
-
+    const result = await toggleUserStatus(formData);
+    if (result.success) {
       toast.success(
         `User ${newStatus === "ACTIVATE" ? "activated" : "suspended"}`,
       );
       router.refresh();
-    } catch {
+    } else {
       toast.error("Failed to update user status");
-    } finally {
-      setLoadingId(null);
     }
+    setLoadingId(null);
   };
 
   return (

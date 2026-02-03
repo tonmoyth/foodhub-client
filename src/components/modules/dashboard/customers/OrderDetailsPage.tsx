@@ -127,11 +127,7 @@ const OrderDetailsPage: React.FC<OrderDetailsPageProps> = ({ order }) => {
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button
-          onClick={() => setIsReviewOpen(true)}
-          disabled={order.status !== "DELIVERED"}
-          className="w-full "
-        >
+        <Button onClick={() => setIsReviewOpen(true)} className="w-full ">
           Review
         </Button>
 

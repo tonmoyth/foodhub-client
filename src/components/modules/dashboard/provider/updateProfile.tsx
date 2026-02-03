@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { updateProvider } from "@/actions/provider.action";
 import { useRouter } from "next/navigation";
-import { env } from "@/env";
 
 // /* ---------------- Zod Schema ---------------- */
 // const providerSchema = z.object({
@@ -48,26 +48,20 @@ export function UpdateProviderForm() {
     //   onSubmit: providerSchema,
     // },
     onSubmit: async ({ value }) => {
-      const toastId = toast.loading("Updating provider...");
-      try {
-        const response = await fetch(
-          `${env.NEXT_PUBLIC_API_URL}/api/providers`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(value),
-          },
-        );
+      const formData = new FormData();
+      formData.append("res_name", value.res_name);
+      formData.append("address", value.address);
+      formData.append("phone", value.phone);
+      formData.append("description", value.description);
+      formData.append("city", value.city);
 
-        if (!response.ok) throw new Error("Failed to update provider");
-
-        toast.success("Provider updated successfully!", { id: toastId });
+      const result = await updateProvider(formData);
+      if (result.success) {
+        toast.success("Provider updated successfully!");
         router.push("/dashboard/addmenu");
         router.refresh();
-      } catch (err) {
-        console.error(err);
-        toast.error("Failed to update provider. Try again.", { id: toastId });
+      } else {
+        toast.error(result.message || "Failed to update provider. Try again.");
       }
     },
   });

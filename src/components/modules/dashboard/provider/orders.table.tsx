@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { env } from "@/env";
 import { useRouter } from "next/navigation";
+import { updateOrderStatus } from "@/actions/meals.action";
 
 interface Order {
   id: string;
@@ -46,24 +46,16 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders }) => {
     newStatus: Order["status"],
   ) => {
     const taostId = toast.loading("updating status...");
-    // setUpdatingId(orderId);
-    try {
-      const res = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/api/provider/orders/${orderId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ status: newStatus }),
-        },
-      );
-      if (!res.ok) throw new Error("Failed to update status");
+    const formData = new FormData();
+    formData.append("orderId", orderId);
+    formData.append("status", newStatus);
+
+    const result = await updateOrderStatus(formData);
+    if (result.success) {
       toast.success("Status updated successfully!", { id: taostId });
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update status");
+    } else {
+      toast.error(result.message || "Failed to update status");
     }
   };
 

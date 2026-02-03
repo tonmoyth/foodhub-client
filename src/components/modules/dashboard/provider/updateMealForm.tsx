@@ -22,7 +22,6 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { Switch } from "@/components/ui/switch";
-import { env } from "@/env";
 import {
   Select,
   SelectContent,
@@ -31,6 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import { updateMeal } from "@/actions/meals.action";
 
 interface Meal {
   id: string;
@@ -89,38 +89,24 @@ const UpdateMealModal: React.FC<UpdateMealModalProps> = ({
     },
     onSubmit: async ({ value }) => {
       const toastId = toast.loading("Updating meal...");
-      try {
-        const res = await fetch(
-          `${env.NEXT_PUBLIC_API_URL}/api/providers/single`,
-          {
-            credentials: "include",
-          },
-        );
+      const formData = new FormData();
+      formData.append("mealId", meal.id);
+      formData.append("title", value.title);
+      formData.append("description", value.description);
+      formData.append("price", value.price.toString());
+      formData.append("discount_price", value.discount_price.toString());
+      formData.append("categoriesId", value.categoriesId);
+      formData.append("image", value.image);
+      formData.append("is_available", value.is_available.toString());
+      formData.append("prep_time_minute", value.prep_time_minute);
 
-        const { data } = await res.json();
-
-        const updateData = {
-          ...value,
-          providerProfileId: data.id,
-        };
-
-        const response = await fetch(
-          `${env.NEXT_PUBLIC_API_URL}/api/provider/meals/${meal.id}`,
-          {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(updateData),
-          },
-        );
-
-        if (!response.ok) throw new Error("Failed to update meal");
-
+      const result = await updateMeal(formData);
+      if (result.success) {
         toast.success("Meal updated successfully", { id: toastId });
         router.refresh();
         onClose();
-      } catch (error: any) {
-        toast.error(error.message || "Something went wrong", { id: toastId });
+      } else {
+        toast.error(result.message || "Something went wrong", { id: toastId });
       }
     },
   });

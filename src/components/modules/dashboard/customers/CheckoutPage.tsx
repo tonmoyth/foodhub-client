@@ -25,6 +25,7 @@ import {
 
 import { getCart } from "@/utils/addToCard";
 import { useRouter } from "next/navigation";
+import { placeOrder } from "@/actions/meals.action";
 
 /* ---------------- ZOD SCHEMA ---------------- */
 const checkoutSchema = z.object({
@@ -66,27 +67,22 @@ export default function CheckoutPage() {
         totalAmount: subtotal,
       };
 
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/orders`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(orderPayload),
-          },
-        );
+      const formData = new FormData();
+      formData.append("customerName", orderPayload.customerName);
+      formData.append("customerPhone", orderPayload.customerPhone);
+      formData.append("deliveryAddress", orderPayload.deliveryAddress);
+      formData.append("mealsId", orderPayload.mealsId);
+      formData.append("providerProfileId", orderPayload.providerProfileId);
+      formData.append("totalAmount", orderPayload.totalAmount.toString());
 
-        if (!res.ok) throw new Error("Failed to place order");
-
+      const result = await placeOrder(formData);
+      if (result.success) {
         toast.success("Order placed successfully!", { id: taosId });
         localStorage.clear();
         route.refresh();
         form.reset();
-      } catch (error: any) {
-        toast.error(error.message || "Something went wrong", { id: taosId });
+      } else {
+        toast.error(result.message || "Something went wrong", { id: taosId });
       }
     },
   });

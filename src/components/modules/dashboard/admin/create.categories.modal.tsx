@@ -12,8 +12,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
-import { env } from "@/env";
 import { useRouter } from "next/navigation";
+import { createCategory } from "@/actions/meals.action";
 
 interface ReviewModalProps {
   isOpen: boolean;
@@ -28,27 +28,16 @@ const CreateCategories: React.FC<ReviewModalProps> = ({ isOpen, onClose }) => {
 
   const handleCreate = async () => {
     const toastId = toast.loading("creating...");
-    const newCategories = {
-      name,
-      slug: description,
-    };
-    try {
-      const response = await fetch(
-        `${env.NEXT_PUBLIC_API_URL}/api/categories`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(newCategories),
-        },
-      );
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("slug", description);
 
-      if (!response.ok) throw new Error("Failed create");
+    const result = await createCategory(formData);
+    if (result.success) {
       toast.success("Categories created successfully!", { id: toastId });
-
       onClose();
       router.refresh();
-    } catch (err) {
+    } else {
       toast.error("Failed Creation. Try again.");
     }
   };

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { submitReview } from "@/actions/meals.action";
 
 interface ReviewModalProps {
   isOpen: boolean;
@@ -27,32 +28,21 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       toast.error("Please select a rating");
       return;
     }
-    const reviewData = {
-      mealId,
-      orderId,
-      rating,
-      comment,
-    };
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/review`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(reviewData),
-        },
-      );
+    const formData = new FormData();
+    formData.append("mealId", mealId);
+    formData.append("orderId", orderId);
+    formData.append("rating", rating.toString());
+    formData.append("comment", comment);
 
-      if (!response.ok) throw new Error("Failed to submit review");
-
+    const result = await submitReview(formData);
+    if (result.success) {
       toast.success("Review submitted successfully!");
       setRating(0);
       setComment("");
       onClose();
-    } catch (err) {
-      toast.error("Failed to submit review. Try again.");
+    } else {
+      toast.error(result.message || "Failed to submit review. Try again.");
     }
   };
 

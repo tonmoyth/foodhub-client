@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
-import { env } from "@/env";
+import { createMeal } from "@/actions/meals.action";
 
 /* ---------------- Zod Schema ---------------- */
 const mealSchema = z.object({
@@ -80,24 +80,24 @@ export function CreateMealForm({ categoriesData, providerData }: any) {
         return router.push("/dashboard/makeProvider");
       }
 
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/provider/meals`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(value),
-          },
-        );
+      const formData = new FormData();
+      formData.append("title", value.title);
+      formData.append("description", value.description);
+      formData.append("price", value.price.toString());
+      formData.append("discount_price", value.discount_price.toString());
+      formData.append("categoriesId", value.categoriesId);
+      formData.append("image", value.image);
+      formData.append("is_available", value.is_available.toString());
+      formData.append("prep_time_minute", value.prep_time_minute);
+      formData.append("providerProfileId", value.providerProfileId);
 
-        if (!response.ok) throw new Error("Failed to submit review");
-
-        toast.success("Meal creation successfully!");
-      } catch (err) {
-        toast.error("Failed meal creation. Try again.");
+      const result = await createMeal(formData);
+      if (result.success) {
+        toast.success("Meal created successfully!");
+        form.reset();
+      } else {
+        toast.error(result.message || "Failed to create meal. Try again.");
       }
-      form.reset();
     },
   });
 
