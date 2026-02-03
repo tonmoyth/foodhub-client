@@ -55,3 +55,7 @@ export async function getAllOrdersForAdmin() {
 export async function getAdminStatistics() {
   return await statisticsService.getAdminStatistics();
 }
+
+export async function getProviderStatistics() {
+  return await statisticsService.getProviderStatistics();
+}

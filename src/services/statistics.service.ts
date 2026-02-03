@@ -17,7 +17,26 @@ const statisticsService = {
 
       return statistics;
     } catch (error: any) {
-      return { seesion: null, message: error.message };
+      return { data: null, message: error.message };
+    }
+  },
+
+  getProviderStatistics: async () => {
+    const cookieStore = await cookies();
+
+    try {
+      const res = await fetch(`${env.API_URL}/api/providers/stats`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      const statistics = await res.json();
+
+      return statistics;
+    } catch (error: any) {
+      return { data: null, message: error.message };
     }
   },
 };
