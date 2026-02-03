@@ -1,27 +1,9 @@
 "use client";
 
 import * as React from "react";
-import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/nav-documents";
 import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
+
 import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
@@ -39,6 +21,8 @@ import Link from "next/link";
 import { providerRoutes } from "@/routes/provider.routes";
 import { adminRoutes } from "@/routes/admin.routes";
 import { ROLE } from "@/constent/role";
+import Image from "next/image";
+import logoIcon from "../../public/logo.png";
 
 interface userProfile {
   name: string;
@@ -70,9 +54,15 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">FoodHub</span>
+              <Link href="/" className="flex items-center gap-2">
+                <Image
+                  src={logoIcon}
+                  className="max-h-9 max-w-9 dark:invert"
+                  alt="logo"
+                />
+                <span className="text-lg font-semibold tracking-tighter">
+                  FoodHub
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

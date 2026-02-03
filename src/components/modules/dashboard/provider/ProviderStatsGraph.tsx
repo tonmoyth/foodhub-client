@@ -36,7 +36,8 @@ export default function ProviderStatsGraph({ data }: Props) {
             <XAxis dataKey="name" />
             <YAxis allowDecimals={false} />
             <Tooltip />
-            <Bar dataKey="value" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="value" radius={[6, 6, 0, 0]} fill="#22c55e" />{" "}
+            {/* green-500 */}
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

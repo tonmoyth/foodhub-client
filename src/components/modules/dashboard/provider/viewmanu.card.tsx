@@ -24,6 +24,7 @@ interface MenuItem {
   is_available: boolean;
   prep_time_minute: string;
 }
+
 export default function MenuCard({
   item,
   categories,
@@ -61,10 +62,7 @@ export default function MenuCard({
 
     const deleteResult = await deleteMeal(formData);
     if (deleteResult.success) {
-      toast.success("Menu item deleted successfully", {
-        id: toastId,
-      });
-
+      toast.success("Menu item deleted successfully", { id: toastId });
       router.refresh();
     } else {
       toast.error(deleteResult.message || "Something went wrong", {
@@ -75,21 +73,22 @@ export default function MenuCard({
 
   return (
     <div>
-      <Card className="rounded-3xl flex flex-col overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-        {/* Image */}
-        <div className="relative h-48 w-full">
+      <Card className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1 hover:scale-[1.02] border-none">
+        {/* Image with subtle gradient overlay */}
+        <div className="relative h-48 w-full overflow-hidden">
           <Image
             src={item.image}
             alt={item.title}
             fill
-            className="object-cover transition-transform duration-500 hover:scale-105"
+            className="object-cover transition-transform duration-500 hover:scale-110"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"></div>
 
           {/* Availability Badge */}
           <Badge
             className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold shadow ${
               item.is_available
-                ? "bg-green-800 text-white"
+                ? "bg-green-700 text-white"
                 : "bg-red-500 text-white"
             }`}
           >
@@ -98,35 +97,35 @@ export default function MenuCard({
         </div>
 
         {/* Content */}
-        <CardContent className="p-5 space-y-4 bg-gradient-to-b from-white to-gray-50">
+        <CardContent className="p-4 space-y-3 bg-white">
           {/* Title + Description */}
           <div>
             <h3 className="text-lg font-bold line-clamp-1 text-gray-900">
               {item.title}
             </h3>
-            <p className="text-sm text-gray-500 line-clamp-2 mt-1">
+            <p className="text-sm text-gray-600 line-clamp-2 mt-1">
               {item.description}
             </p>
           </div>
 
-          {/* Price + Time */}
+          {/* Price + Prep Time */}
           <div className="flex items-center justify-between">
-            <span className="text-xl font-extrabold text-green-800">
+            <span className="text-xl font-extrabold text-yellow-600">
               ৳{finalPrice}
             </span>
-            <div className="flex items-center gap-1 text-xs text-gray-400">
+            <div className="flex items-center gap-1 text-xs text-gray-500">
               <Clock className="h-4 w-4" />
               {item.prep_time_minute} min
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-3">
+          <div className="flex gap-3 pt-2">
             <Button
               onClick={() => setOpen(true)}
               size="sm"
               variant="outline"
-              className="flex-1 bg-white hover:bg-indigo-50 border-green-800 text-green-800 font-medium shadow-sm hover:shadow-md transition"
+              className="flex-1 bg-white border-green-700 text-green-700 font-medium shadow-sm hover:shadow-md hover:bg-green-50 transition"
             >
               <Pencil className="h-4 w-4 mr-1" /> Edit
             </Button>
@@ -142,6 +141,7 @@ export default function MenuCard({
           </div>
         </CardContent>
       </Card>
+
       {/* Update Modal */}
       <UpdateMealModal
         isOpen={open}

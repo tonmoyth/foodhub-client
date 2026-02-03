@@ -39,6 +39,8 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import logoIcon from "../../public/logo.png";
+import Image from "next/image";
 
 interface MenuItem {
   title: string;
@@ -72,12 +74,6 @@ interface Navbar1Props {
 }
 
 const Navbar1 = ({
-  logo = {
-    url: "/",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Foodhub",
-  },
   menu = [
     { title: "Home", url: "/" },
     {
@@ -137,19 +133,19 @@ const Navbar1 = ({
         className,
       )}
     >
-      <div className=" mx-auto px-5 ">
+      <div className=" mx-auto pl-5 pr-8 ">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
-            <Link href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src={logoIcon}
+                className="max-h-15 max-w-15 dark:invert"
+                alt="logo"
               />
               <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
+                FoodHub
               </span>
             </Link>
           </div>
@@ -167,7 +163,7 @@ const Navbar1 = ({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="rounded-full w-10 h-10 p-0">
-                  <img
+                  <Image
                     src={
                       user.image || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
                     }
@@ -183,7 +179,7 @@ const Navbar1 = ({
               >
                 {/* User Info Section */}
                 <div className="bg-muted p-4 text-center">
-                  <img
+                  <Image
                     src={
                       user.image || "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
                     }
@@ -239,13 +235,15 @@ const Navbar1 = ({
         <div className="block lg:hidden">
           <div className="flex items-center justify-between px-4 py-2">
             {/* Logo */}
-            <Link href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src={logoIcon}
+                className="max-h-9 max-w-9 dark:invert"
+                alt="logo"
               />
-              <span className="font-semibold text-lg">{logo.title}</span>
+              <span className="text-lg font-semibold tracking-tighter">
+                FoodHub
+              </span>
             </Link>
 
             {/* Menu Sheet */}
@@ -260,14 +258,15 @@ const Navbar1 = ({
                 {/* Header in Sheet */}
                 <SheetHeader>
                   <SheetTitle>
-                    <Link href={logo.url} className="flex items-center gap-2">
-                      <img
-                        src={logo.src}
-                        className="max-h-8 dark:invert"
-                        alt={logo.alt}
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-2">
+                      <Image
+                        src={logoIcon}
+                        className="max-h-15 max-w-15 dark:invert"
+                        alt="logo"
                       />
-                      <span className="font-semibold text-lg">
-                        {logo.title}
+                      <span className="text-lg font-semibold tracking-tighter">
+                        FoodHub
                       </span>
                     </Link>
                   </SheetTitle>
@@ -303,7 +302,7 @@ const Navbar1 = ({
                             variant="ghost"
                             className="flex items-center w-full justify-start gap-3 p-2 rounded-lg hover:bg-muted"
                           >
-                            <img
+                            <Image
                               src={
                                 user.avatar ||
                                 "https://i.ibb.co.com/RkrZSzxS/41843.jpg"
