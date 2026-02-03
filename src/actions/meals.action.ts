@@ -4,6 +4,7 @@ import categoriesService from "@/services/categories.service";
 import mealsServices, { IParamsTypes } from "@/services/meals.services";
 import ordersServices from "@/services/orders.sevices";
 import providerService from "@/services/provider.service";
+import statisticsService from "@/services/statistics.service";
 import userService from "@/services/user.service";
 import { OrderPayload } from "@/types";
 
@@ -49,4 +50,8 @@ export async function getAllUsers() {
 
 export async function getAllOrdersForAdmin() {
   return await ordersServices.getAllOrdersForAdmin();
+}
+
+export async function getAdminStatistics() {
+  return await statisticsService.getAdminStatistics();
 }
