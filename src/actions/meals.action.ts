@@ -59,3 +59,7 @@ export async function getAdminStatistics() {
 export async function getProviderStatistics() {
   return await statisticsService.getProviderStatistics();
 }
+
+export async function getProviderwithMenu(id: string) {
+  return await providerService.getProviderwithMenu(id);
+}

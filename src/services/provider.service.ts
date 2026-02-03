@@ -20,6 +20,25 @@ const providerService = {
       return { seesion: null, message: error.message };
     }
   },
+
+  getProviderwithMenu: async (id: string) => {
+    const cookieStore = await cookies();
+
+    try {
+      const res = await fetch(`${env.API_URL}/api/providers/${id}`, {
+        headers: {
+          cookie: cookieStore.toString(),
+        },
+        cache: "no-store",
+      });
+
+      const provider = await res.json();
+
+      return provider;
+    } catch (error: any) {
+      return { data: null, message: error.message };
+    }
+  },
 };
 
 export default providerService;
